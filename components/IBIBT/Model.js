@@ -1,5 +1,5 @@
 const sql = require('mssql');
-const config = require('../../config/dbConfig')
+const {config, config1} = require('../../config/dbConfig')
 
 const Itemsgetall = async () => {
   try {
@@ -129,6 +129,7 @@ const detailProductXuat = async (id_SP) => {
     sql.close();
   }
 }
+
 const findByUsernameAndPassword = async (username, password) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -136,9 +137,9 @@ const findByUsernameAndPassword = async (username, password) => {
       const trimmedUsername = username.trim();
       const trimmedPassword = password.trim();
 
-      const pool = await sql.connect(config);
+      const pool = await sql.connect(config1);
 
-      const query = `SELECT * FROM LOGIN_USER WHERE USERNAME = '${trimmedUsername}' AND PASSWORD = '${trimmedPassword}'`;
+      const query = `SELECT * FROM USER_MOBILE WHERE USERNAME = '${trimmedUsername}' AND PASSWORD = '${trimmedPassword}'`;
       const result = await pool.request().query(query);
 
       const user = result.recordset.length > 0 ? result.recordset[0] : null;

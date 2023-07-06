@@ -19,6 +19,7 @@ const searchProducts = async (req, res) => {
     const products = await Service.searchProducts(id_KH, searchTerm, page, pageSize);
     res.json({ status: true, products: products });
   } catch (error) {
+    console.log('Đã xảy ra lỗi:', error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -91,7 +92,7 @@ const login = async (req, res) => {
         return res.status(400).json({ success: false, message: 'Tài khoản không có quyền truy cập thông tin' })
       }
       console.log(user.is_active)
-       res.status(200).json({ success: true, user: 12, TK: user });
+       res.status(200).json({ success: true, user: user.id_KH, TK: user });
     } else {
       return res.status(400).json({ success: false, message: 'Tài khoản hoặc mật khẩu sai' });
     }
