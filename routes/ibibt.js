@@ -16,4 +16,9 @@ router.get('/detailproduct', Controller.detailProductController);
 router.get('/detailproductxuat', Controller.detailProductXuatController);
 router.post('/Login', Controller.login)
 
+router.get('/locnhaphang/:id_KH/:filterType', Controller.locNhapHang);
+
+router.get('/locxuathang/:id_KH/:filterType', Controller.locXuatHang);
+
+
 module.exports = router;

@@ -73,6 +73,22 @@ const login = async (username, password) => {
     throw error;
   }
 }
+const locnhaphang = async (id_KH, page, pageSize, startDate, endDate) => {
+  try {
+    const items = await model.locnhaphang(id_KH, page, pageSize, startDate, endDate);
+    return items;
+  } catch (error) {
+    throw error;
+  }
+}
+const locxuathang = async (id_KH, page, pageSize, startDate, endDate) => {
+  try {
+    const items = await model.locxuathang(id_KH, page, pageSize, startDate, endDate);
+    return items;
+  } catch (error) {
+    throw error;
+  }
+}
 module.exports = {
   getAllItemsService,
   searchProducts,
@@ -82,5 +98,7 @@ module.exports = {
   getallExportmypage,
   detailProductService,
   detailProductXuatService,
-  login
+  login,
+  locnhaphang,
+  locxuathang
 };

@@ -1,5 +1,5 @@
 const sql = require('mssql');
-const {config, config1} = require('../../config/dbConfig')
+const { config, config1 } = require('../../config/dbConfig')
 
 const Itemsgetall = async () => {
   try {
@@ -17,10 +17,10 @@ const getProducts = async (id_KH, searchTerm, page, pageSize) => {
     await sql.connect(config);
     const offset = (page - 1) * pageSize;
     console.log('id:', id_KH, 'searchTerm:', searchTerm, 'page:', page, 'pageSize:', pageSize);
-    const result = await sql.query(`SELECT TEN_SP, HSD, REF, SUM(SL_TONKHO) AS SL_TONKHO, SUM(KHOI_LUONG) AS KHOI_LUONG
+    const result = await sql.query(`SELECT TEN_SP, HSD, REF , SO_CONT, SUM(SL_TONKHO) AS SL_TONKHO, SUM(KHOI_LUONG) AS KHOI_LUONG
     FROM INVENTORIES
     WHERE ID_KH = ${id_KH} AND TEN_SP LIKE '%${searchTerm}%'
-    GROUP BY TEN_SP, HSD, REF
+    GROUP BY TEN_SP, HSD, REF, SO_CONT
     ORDER BY TEN_SP
     OFFSET ${offset} ROWS
     FETCH NEXT ${pageSize} ROWS ONLY
@@ -147,8 +147,47 @@ const findByUsernameAndPassword = async (username, password) => {
     } catch (error) {
       reject(error);
     }
+
   });
+
+
 }
+const locnhaphang = async (id_KH, page, pageSize, startDate, endDate) => {
+  try {
+    await sql.connect(config);
+    const offset = (page - 1) * pageSize;
+    const query = `SELECT *
+    FROM IB_IBT
+    WHERE ID_KH = ${id_KH} AND NGAY_NHAP BETWEEN '${startDate}' AND '${endDate}'
+    ORDER BY ID_IBT
+    OFFSET ${offset} ROWS
+    FETCH NEXT ${pageSize} ROWS ONLY`;
+    const result = await sql.query(query);
+    return result.recordset;
+  } catch (error) {
+    throw error;
+  } finally {
+    sql.close();
+  }
+};
+const locxuathang = async (id_KH, page, pageSize, startDate, endDate) => {
+  try {
+    await sql.connect(config);
+    const offset = (page - 1) * pageSize;
+    const query = `SELECT *
+    FROM OB_OBT
+    WHERE ID_KH = ${id_KH} AND NGAY_XUAT BETWEEN '${startDate}' AND '${endDate}'
+    ORDER BY ID_OBT
+    OFFSET ${offset} ROWS
+    FETCH NEXT ${pageSize} ROWS ONLY`;
+    const result = await sql.query(query);
+    return result.recordset;
+  } catch (error) {
+    throw error;
+  } finally {
+    sql.close();
+  }
+};
 module.exports = {
   Itemsgetall,
   getProducts,
@@ -158,5 +197,7 @@ module.exports = {
   getallExportmypage,
   findByUsernameAndPassword,
   detailProduct,
-  detailProductXuat
+  detailProductXuat,
+  locnhaphang,
+  locxuathang
 };
