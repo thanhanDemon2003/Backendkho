@@ -1,13 +1,5 @@
 const model = require('./Model');
 
-const getAllItemsService = async () => {
-  try {
-    const items = await model.Itemsgetall();
-    return items;
-  } catch (error) {
-    throw error;
-  }
-};
 const searchProducts = async (id_KH, searchTerm, page, pageSize) => {
   try {
     const items = await model.getProducts(id_KH, searchTerm, page, pageSize);
@@ -16,25 +8,10 @@ const searchProducts = async (id_KH, searchTerm, page, pageSize) => {
     throw error;
   };
 }
-const getallImport = async () => {
-  try {
-    const items = await model.getallImport();
-    return items;
-  } catch (error) {
-    throw error;
-  }
-};
+
 const getallImportmypage = async (id_KH, page, pageSize) => {
   try {
     const items = await model.getallImportmypage(id_KH, page, pageSize);
-    return items;
-  } catch (error) {
-    throw error;
-  }
-};
-const getallExport = async () => {
-  try {
-    const items = await model.getallExport();
     return items;
   } catch (error) {
     throw error;
@@ -90,11 +67,8 @@ const locxuathang = async (id_KH, page, pageSize, startDate, endDate) => {
   }
 }
 module.exports = {
-  getAllItemsService,
   searchProducts,
-  getallImport,
   getallImportmypage,
-  getallExport,
   getallExportmypage,
   detailProductService,
   detailProductXuatService,

@@ -1,14 +1,6 @@
 
 const Service = require('./Service');
 const moment = require('moment-timezone');
-const getAllItemsController = async (req, res) => {
-  try {
-    const items = await Service.getAllItemsService();
-    res.status(200).json({ status: true, items: items });
-  } catch (error) {
-    res.status(500).json({ status: false, error: 'Internal Server Error' });
-  }
-};
 const searchProducts = async (req, res) => {
   try {
     const searchTerm = req.query.search || ' ';
@@ -21,14 +13,6 @@ const searchProducts = async (req, res) => {
   } catch (error) {
     console.log('Đã xảy ra lỗi:', error);
     res.status(500).json({ error: error.message });
-  }
-};
-const getallImportController = async (req, res) => {
-  try {
-    const items = await Service.getallImport();
-    res.status(200).json({ status: true, items: items });
-  } catch (error) {
-    res.status(500).json({ status: false, error: 'Internal Server Error' });
   }
 };
 const getallImportmypageController = async (req, res) => {
@@ -182,12 +166,9 @@ const locXuatHang = async (req, res) => {
 };
 
 module.exports = {
-  getAllItemsController,
   searchProducts,
-  getallImportController,
   getallImportmypageController,
   getallExportmypageController,
-  getallExportController,
   detailProductController,
   detailProductXuatController,
   login,

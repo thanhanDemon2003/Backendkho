@@ -1,17 +1,6 @@
 const sql = require('mssql');
 const { config, config1 } = require('../../config/dbConfig')
 
-const Itemsgetall = async () => {
-  try {
-    await sql.connect(config);
-    const result = await sql.query(`SELECT * FROM INVENTORIES`);
-    return result.recordset;
-  } catch (error) {
-    throw error;
-  } finally {
-    sql.close();
-  }
-};
 const getProducts = async (id_KH, searchTerm, page, pageSize) => {
   try {
     await sql.connect(config);
@@ -32,17 +21,6 @@ const getProducts = async (id_KH, searchTerm, page, pageSize) => {
     sql.close();
   }
 };
-const getallExport = async () => {
-  try {
-    await sql.connect(config);
-    const result = await sql.query(`SELECT * FROM OB_OBT`);
-    return result.recordset;
-  } catch (error) {
-    throw error;
-  } finally {
-    sql.close();
-  }
-};
 const getallExportmypage = async (id_KH, page, pageSize) => {
   try {
     await sql.connect(config);
@@ -55,17 +33,6 @@ const getallExportmypage = async (id_KH, page, pageSize) => {
     OFFSET ${offset} ROWS
     FETCH NEXT ${pageSize} ROWS ONLY`;
     const result = await sql.query(query);
-    return result.recordset;
-  } catch (error) {
-    throw error;
-  } finally {
-    sql.close();
-  }
-};
-const getallImport = async () => {
-  try {
-    await sql.connect(config);
-    const result = await sql.query(`SELECT * FROM IB_IBT`);
     return result.recordset;
   } catch (error) {
     throw error;
@@ -189,11 +156,8 @@ const locxuathang = async (id_KH, page, pageSize, startDate, endDate) => {
   }
 };
 module.exports = {
-  Itemsgetall,
   getProducts,
-  getallImport,
   getallImportmypage,
-  getallExport,
   getallExportmypage,
   findByUsernameAndPassword,
   detailProduct,
