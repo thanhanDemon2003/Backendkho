@@ -26,14 +26,6 @@ const getallImportmypageController = async (req, res) => {
     res.status(500).json({ status: false, error: 'Internal Server Error' });
   }
 };
-const getallExportController = async (req, res) => {
-  try {
-    const items = await Service.getallExport();
-    res.status(200).json({ status: true, items: items });
-  } catch (error) {
-    res.status(500).json({ status: false, error: 'Internal Server Error' });
-  }
-};
 const getallExportmypageController = async (req, res) => {
   try {
     const { id_KH } = req.params;
@@ -68,7 +60,6 @@ const detailProductXuatController = async (req, res) => {
 }
 const login = async (req, res) => {
   const { username, password } = req.body;
-
   try {
     const user = await Service.login(username, password);
     if (user) {
@@ -88,10 +79,28 @@ const login = async (req, res) => {
 const locNhapHang = async (req, res) => {
   try {
     const { id_KH, filterType } = req.params;
+    let statusfe = req.query.statusfe;
+    console.log('statusfe:', statusfe);
     let startDate;
+    let status;
     const currentDate = new Date();
     const endDate = new Date().toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }).split(',')[0];
-
+    switch (statusfe) {
+      case '1':
+        status = '';
+        break;
+      case '2':
+        status = 'Hoàn tất';
+        break;
+      case '3':
+        status = 'Đang xử lý';
+        break;
+      case '4':
+        status = 'Hủy';
+        break;
+      default:
+        throw new Error('Invalid filter type');
+    }
     switch (filterType) {
       case 'all':
         startDate = new Date('1753-01-01').toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }).split(',')[0];
@@ -107,10 +116,8 @@ const locNhapHang = async (req, res) => {
         startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }).split(',')[0];
         break;
         case 'custom':
-          let date = moment(req.query.date);
-          console.log(date)
-          date.tz('Europe/London').startOf('day');
-          startDate = date.format('MM/DD/YYYY');
+          let date = new Date(req.query.date);
+          startDate = moment(date).tz('Europe/London').format('MM/DD/YYYY');
           break;
       default:
         throw new Error('Invalid filter type');
@@ -118,7 +125,7 @@ const locNhapHang = async (req, res) => {
     console.log(startDate, endDate)
     const page = req.query.page || 1;
     const pageSize = 20;
-    const items = await Service.locnhaphang(id_KH, page, pageSize, startDate, endDate);
+    const items = await Service.locnhaphang(id_KH, page, pageSize, startDate, endDate, status);
     res.status(200).json({ status: true, items: items });
   } catch (error) {
     console.log(error);
@@ -128,10 +135,28 @@ const locNhapHang = async (req, res) => {
 const locXuatHang = async (req, res) => {
   try {
     const { id_KH, filterType } = req.params;
+    let statusfe = req.query.statusfe;
+    console.log('statusfe:', statusfe);
     let startDate;
+    let status;
     const currentDate = new Date();
     const endDate = new Date().toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }).split(',')[0];
-
+    switch (statusfe) {
+      case '1':
+        status = '';
+        break;
+      case '2':
+        status = 'Hoàn tất';
+        break;
+      case '3':
+        status = 'Đang xử lý';
+        break;
+      case '4':
+        status = 'Hủy';
+        break;
+      default:
+        throw new Error('Invalid filter type');
+    }
     switch (filterType) {
       case 'all':
         startDate = new Date('1753-01-01').toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }).split(',')[0];
@@ -146,21 +171,20 @@ const locXuatHang = async (req, res) => {
       case 'thisMonth':
         startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }).split(',')[0];
         break;
-        case 'custom':
-          let date = moment(req.query.date);
-          console.log(date)
-          date.tz('Europe/London').startOf('day');
-          startDate = date.format('MM/DD/YYYY');
-          break;
+      case 'custom':
+        let date = new Date(req.query.date);
+        startDate = moment(date).tz('Europe/London').format('MM/DD/YYYY');
+        break;
       default:
         throw new Error('Invalid filter type');
     }
     console.log(startDate, endDate)
     const page = req.query.page || 1;
     const pageSize = 20;
-    const items = await Service.locxuathang(id_KH, page, pageSize, startDate, endDate);
+    const items = await Service.locxuathang(id_KH, page, pageSize, startDate, endDate, status);
     res.status(200).json({ status: true, items: items });
   } catch (error) {
+    console.log(error)
     res.status(500).json({ status: false, error: 'Internal Server Error' });
   }
 };

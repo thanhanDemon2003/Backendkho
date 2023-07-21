@@ -50,17 +50,17 @@ const login = async (username, password) => {
     throw error;
   }
 }
-const locnhaphang = async (id_KH, page, pageSize, startDate, endDate) => {
+const locnhaphang = async (id_KH, page, pageSize, startDate, endDate, status) => {
   try {
-    const items = await model.locnhaphang(id_KH, page, pageSize, startDate, endDate);
+    const items = await model.locnhaphang(id_KH, page, pageSize, startDate, endDate, status);
     return items;
   } catch (error) {
     throw error;
   }
 }
-const locxuathang = async (id_KH, page, pageSize, startDate, endDate) => {
+const locxuathang = async (id_KH, page, pageSize, startDate, endDate, status) => {
   try {
-    const items = await model.locxuathang(id_KH, page, pageSize, startDate, endDate);
+    const items = await model.locxuathang(id_KH, page, pageSize, startDate, endDate, status);
     return items;
   } catch (error) {
     throw error;
